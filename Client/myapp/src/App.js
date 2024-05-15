@@ -4,6 +4,7 @@ import Login from './Login';
 import Register from "./Register";
 import Editor from "./Editor";
 import Home from "./Home";
+import AdminHome from "./Admin/AdminHome";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Route path="/" element={<Register/>}/>
       <Route path="/editor" element={<Editor/>}/>
       <Route path="/login" element={<Login/>}/>
-      <Route path="/home" editor={<Home/>}/>
+      <Route path="/home" element={<Home/>}/>
+      <Route path="/admin" element={<AdminHome/>}/>
       </Routes>
     </Router>
   

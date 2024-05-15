@@ -14,7 +14,8 @@ const Login = () => {
        })
        console.log(response)
        if(response.status===200){
-         navigate("/home")
+
+         navigate("/admin")
        }
     }catch(error){
        console.log(error)
