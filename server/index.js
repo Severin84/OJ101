@@ -1,6 +1,7 @@
 const express =require('express');
 const mongoose =require('mongoose')
 const authRoutes=require("./Routes/UserAuth.js");
+const QuestionRoutes=require("./Routes/Questions.js")
 const bodyparser=require('body-parser')
 const cors=require('cors');
 const app=express();
@@ -20,6 +21,7 @@ async function connect(){
     }
 }
 app.use("/api/auth",authRoutes)
+app.use("/api/question",QuestionRoutes)
 app.listen(PORT,()=>{
     console.log(`server is running on PORT ${PORT}`)
 })
