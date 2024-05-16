@@ -34,10 +34,10 @@ const login=async(req,res,next)=>{
       if(!isPasswordVaild){
         return res.status(400).json({message:"Invalid Email or Password"});
       }
-      console.log("hhele")
+     // console.log("hhele")
       const token=jwt.sign({userId:user._id},'secretKey');
 
-      res.status(200).json({token})
+      res.status(200).json({data:user})
     }catch(error){
         res.status(500).json({message:'An error occured while logging'})
     }

@@ -13,9 +13,13 @@ const Login = () => {
         password:password
        })
        console.log(response)
-       if(response.status===200){
-
-         navigate("/admin")
+       if(response.status===200 ){
+         if(response?.data?.data?.role==="admin"){
+          navigate("/admin")
+         }else{
+          navigate("/home")
+         }
+         
        }
     }catch(error){
        console.log(error)
