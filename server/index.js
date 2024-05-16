@@ -1,21 +1,24 @@
 const express =require('express');
 const mongoose =require('mongoose')
+const dotenv = require('dotenv')
 const authRoutes=require("./Routes/UserAuth.js");
 const QuestionRoutes=require("./Routes/Questions.js")
 const TCRoutes=require("./Routes/TestCase.js")
 const bodyparser=require('body-parser')
 const cors=require('cors');
 const app=express();
-const PORT=5000;
+
 
 app.use(express.json());
+dotenv.config()
 app.use(cors())
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json())
 //qIU2swIDluB5CV42
+const PORT=process.env.PORT;
 async function connect(){
     try{
-        await mongoose.connect('mongodb+srv://84severin:qIU2swIDluB5CV42@cluster0.8wd6kwl.mongodb.net/OJTRIAL101',{})
+        await mongoose.connect(process.env.DBURI,{})
         console.log("CONNECTED")
     }catch(error){
         console.log(error)
