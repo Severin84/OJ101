@@ -48,15 +48,24 @@ const cExecution=async (data,input)=>{
                 console.log("Compiled");
 
                 const child=spawn("./a");
-                child.stdin.write("2 2");
+                const exepath=path.join(__dirname,"../a.exe");
+                console.log(exepath)
+                child.stdin.write(input);
                 child.stdin.end();
 
                 child.stdout.on("data",(data)=>{
                   resolve(data); 
                      console.log(`child stdout:\n ${data}`);
                 })
-
                 
+                fs.unlinkSync(inputPath);
+                fs.unlinkSync(filePath)
+                fs.unlink(exepath,(error)=>{
+                    if(error){
+                        console.log(`Deleting exefile error:${error}`)
+                    }
+                    console.log("exe file deleted ")
+                })
             })
         } )
      }catch(error){
