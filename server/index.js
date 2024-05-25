@@ -16,7 +16,7 @@ app.use(cors())
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json())
 //qIU2swIDluB5CV42
-const PORT=process.env.PORT;
+const PORT= process.env.PORT;
 async function connect(){
     try{
         await mongoose.connect(process.env.DBURI,{})

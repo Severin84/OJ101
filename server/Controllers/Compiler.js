@@ -6,7 +6,7 @@ const cCode=async(req,res,next)=>{
     try{
         const {lang,code,input}=req.body;
        
-        if(lang==='C'){
+        if(lang==='C++'){
             console.log(code)
              const responce=await cExecution(code,input);
              if(responce){

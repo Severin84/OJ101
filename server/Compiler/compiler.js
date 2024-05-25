@@ -1,23 +1,20 @@
 const fs=require('fs');
-const {exec}=require('child_process');
+const {exec,spawn}=require('child_process');
 const path=require('path');
 const { stdout, stderr } = require('process');
+const util = require("util")
+const pe=require('pe-parser')
+const writeFileAsync = util.promisify(fs.writeFile);
 
-const saveFile=async(name,data)=>{
+
+
+const saveFile=async (name,data)=>{
     try{
-       console.log("saving code");
-       await fs.writeFile(name,data,function(error){
-          if(error){
-             console.log("somthing went wrong while saving file")
-             //return;
-          }else{
-             console.log("File saved");
-            // return;
-          }
-       })
+    await writeFileAsync(name,data); 
+    console.log("file has been saved!"); 
     }catch(error){
         console.log("somthing went wrong")
-        //return;
+        return;
     }
 }
 
@@ -25,8 +22,9 @@ const saveFile=async(name,data)=>{
 
 const cExecution=async (data,input)=>{
      try{
-        const filename="test.c";
-        await saveFile(filename,data).then(()=>{
+        return new Promise(async (resolve, reject) => {
+        const filename="test.cpp";
+        await saveFile(filename,data)
              console.log("gg")
             const inputfilename="input.txt";
              console.log("ll");
@@ -38,32 +36,35 @@ const cExecution=async (data,input)=>{
             })
             console.log("f")
             const inputPath=path.join(__dirname,"../input.txt")
-            const filePath=path.join(__dirname,"../test.c");
+            const filePath=path.join(__dirname,"../test.cpp");
             console.log('H');
             console.log("file path >> "+filePath);
             console.log("k");
-            exec('gcc '+filePath,(error,stdout,stderr)=>{
+            exec('g++ test.cpp',(error,stdout,stderr)=>{
                 if(error){
                     console.log(`exec error:${error}`);
                     return;
                 }
-            })
 
-            console.log("Compiled");
-
-            exec('../input.txt',(error,stdout,stderr)=>{
-                if(error){
-                    console.log('error >'+error);
-                    return;
+                if(stderr){
+                    console.log(`stderr: ${stderr}`)
+                    return ;
                 }
-            })
+                console.log("Compiled");
 
-            console.log('output',stdout)
-            return 
-        }).catch(()=>{
-            console.log("error in saved file"+saveFile)
-            return;    
-        })
+                const child=spawn("./a");
+                child.stdin.write("2 2");
+                child.stdin.end();
+            
+
+                child.stdout.on("data",(data)=>{
+                  resolve(data); 
+                     console.log(`child stdout:\n ${data}`);
+                })
+
+                
+            })
+        } )
      }catch(error){
         console.log("somthing went wrong while execution")
         return;
