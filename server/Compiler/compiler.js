@@ -25,21 +25,16 @@ const cExecution=async (data,input)=>{
         return new Promise(async (resolve, reject) => {
         const filename="test.cpp";
         await saveFile(filename,data)
-             console.log("gg")
             const inputfilename="input.txt";
-             console.log("ll");
             fs.writeFile(inputfilename,input,function(error){
                 if(error){
                     console.log(error);
                     return;
                 }
             })
-            console.log("f")
             const inputPath=path.join(__dirname,"../input.txt")
             const filePath=path.join(__dirname,"../test.cpp");
-            console.log('H');
             console.log("file path >> "+filePath);
-            console.log("k");
             exec('g++ test.cpp',(error,stdout,stderr)=>{
                 if(error){
                     console.log(`exec error:${error}`);
@@ -55,7 +50,6 @@ const cExecution=async (data,input)=>{
                 const child=spawn("./a");
                 child.stdin.write("2 2");
                 child.stdin.end();
-            
 
                 child.stdout.on("data",(data)=>{
                   resolve(data); 
