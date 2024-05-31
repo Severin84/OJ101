@@ -7,7 +7,6 @@ const pe=require('pe-parser')
 const writeFileAsync = util.promisify(fs.writeFile);
 
 
-
 const saveFile=async (name,data)=>{
     try{
     await writeFileAsync(name,data); 
@@ -20,10 +19,10 @@ const saveFile=async (name,data)=>{
 
 
 
-const cExecution=async (data,input)=>{
+const cplusExecution=async (data,input,filename)=>{
      try{
         return new Promise(async (resolve, reject) => {
-        const filename="test.cpp";
+        const fileName=filename;
         await saveFile(filename,data)
             const inputfilename="input.txt";
             fs.writeFile(inputfilename,input,function(error){
@@ -33,9 +32,9 @@ const cExecution=async (data,input)=>{
                 }
             })
             const inputPath=path.join(__dirname,"../input.txt")
-            const filePath=path.join(__dirname,"../test.cpp");
-            console.log("file path >> "+filePath);
-            exec('g++ test.cpp',(error,stdout,stderr)=>{
+            const filePath=path.join(__dirname,`..${fileName}`);
+            //console.log("file path >> "+filePath);
+            exec(`g++ ${fileName}`,(error,stdout,stderr)=>{
                 if(error){
                     console.log(`exec error:${error}`);
                     return;
@@ -49,8 +48,9 @@ const cExecution=async (data,input)=>{
 
                 const child=spawn("./a");
                 const exepath=path.join(__dirname,"../a.exe");
-                console.log(exepath)
+                //console.log(exepath)
                 child.stdin.write(input);
+                
                 child.stdin.end();
 
                 child.stdout.on("data",(data)=>{
@@ -60,12 +60,12 @@ const cExecution=async (data,input)=>{
                 
                 fs.unlinkSync(inputPath);
                 fs.unlinkSync(filePath)
-                fs.unlink(exepath,(error)=>{
-                    if(error){
-                        console.log(`Deleting exefile error:${error}`)
-                    }
-                    console.log("exe file deleted ")
-                })
+                // fs.unlink(exepath,(error)=>{
+                //     if(error){
+                //         console.log(`Deleting exefile error:${error}`)
+                //     }
+                //     console.log("exe file deleted ")
+                // })
             })
         } )
      }catch(error){
@@ -74,6 +74,118 @@ const cExecution=async (data,input)=>{
      }
 }
 
+
+const cExecutions =(data,input,filename)=>{
+    try{
+        return new Promise(async (resolve, reject) => {
+            const fileName=filename;
+            await saveFile(fileName,data)
+                const inputfilename="input.txt";
+                fs.writeFile(inputfilename,input,function(error){
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+                })
+                const inputPath=path.join(__dirname,"../input.txt")
+                const filePath=path.join(__dirname,`..${fileName}`);
+                //console.log("file path >> "+filePath);
+                exec(`gcc ${fileName}`,(error,stdout,stderr)=>{
+                    if(error){
+                        console.log(`exec error:${error}`);
+                        return;
+                    }
+    
+                    if(stderr){
+                        console.log(`stderr: ${stderr}`)
+                        return ;
+                    }
+                    console.log("Compiled");
+    
+                    const child=spawn("./a");
+                    const exepath=path.join(__dirname,"../a.exe");
+                    //console.log(exepath)
+                    child.stdin.write(input);
+                    child.stdin.end();
+    
+                    child.stdout.on("data",(data)=>{
+                      resolve(data); 
+                         console.log(`child stdout:\n ${data}`);
+                    })
+                    
+                    fs.unlinkSync(inputPath);
+                    fs.unlinkSync(filePath)
+                    // fs.unlink(exepath,(error)=>{
+                    //     if(error){
+                    //         console.log(`Deleting exefile error:${error}`)
+                    //     }
+                    //     console.log("exe file deleted ")
+                    // })
+                })
+            } )
+    }catch(error){
+        console.log("somthing went wrong while execution")
+        return;
+    }
+}
+
+
+const javaExecutions=(data,input,filename)=>{
+    try{
+        return new Promise(async (resolve, reject) => {
+           // console.log(data);
+            const fileName=filename;
+            await saveFile(fileName,data)
+                const inputfilename="input.txt";
+                fs.writeFile(inputfilename,input,function(error){
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+                })
+                const inputPath=path.join(__dirname,"../input.txt")
+                const filePath=path.join(__dirname,`../${filename}`);
+                //console.log("file path >> "+filePath);
+                exec(`javac ${fileName}`,(error,stdout,stderr)=>{
+                    if(error){
+                        console.log(`exec error:${error}`);
+                        return;
+                    }
+    
+                    if(stderr){
+                        console.log(`stderr: ${stderr}`)
+                        return ;
+                    }
+                    //console.log("Compiled");
+    
+                    const child=spawn("./a");
+                    const exepath=path.join(__dirname,"../a.exe");
+                    //console.log(exepath)
+                    child.stdin.write(input);
+                    //console.log("yy")
+                    //child.stdin.write();
+                    child.stdin.end();
+    
+                    child.stdout.on("data",(data)=>{
+                      resolve(data); 
+                         console.log(`child stdout:\n ${data}`);
+                    })
+                    
+                    fs.unlinkSync(inputPath);
+                    fs.unlinkSync(filePath)
+                    // fs.unlink(exepath,(error)=>{
+                    //     if(error){
+                    //         console.log(`Deleting exefile error:${error}`)
+                    //     }
+                    //     console.log("exe file deleted ")
+                    // })
+                })
+            } )
+    }catch(error){
+        console.log("somthing went wrong while execution")
+        return;
+    }
+}
 module.exports={
-    cExecution,
+    cplusExecution,cExecutions,javaExecutions
 }

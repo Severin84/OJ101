@@ -59,6 +59,7 @@ const updateTC=async(req,res,next)=>{
     }
 }
 
+
 const deleteTC=async(req,res,next)=>{
     try{
        const {pid}=req.body;

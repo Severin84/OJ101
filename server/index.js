@@ -13,6 +13,7 @@ const app=express();
 app.use(express.json());
 dotenv.config()
 app.use(cors())
+app.use(express.static(__dirname))
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json())
 //qIU2swIDluB5CV42
