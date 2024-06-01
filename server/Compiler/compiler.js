@@ -22,8 +22,8 @@ const saveFile=async (name,data)=>{
 const cplusExecution=async (data,input,filename)=>{
      try{
         return new Promise(async (resolve, reject) => {
-        const fileName=filename;
-        await saveFile(filename,data)
+        const fileName=filename || 'test.cpp';
+        await saveFile(fileName,data)
             const inputfilename="input.txt";
             fs.writeFile(inputfilename,input,function(error){
                 if(error){
@@ -78,7 +78,7 @@ const cplusExecution=async (data,input,filename)=>{
 const cExecutions =(data,input,filename)=>{
     try{
         return new Promise(async (resolve, reject) => {
-            const fileName=filename;
+            const fileName=filename || 'test.c';
             await saveFile(fileName,data)
                 const inputfilename="input.txt";
                 fs.writeFile(inputfilename,input,function(error){
@@ -134,7 +134,7 @@ const javaExecutions=(data,input,filename)=>{
     try{
         return new Promise(async (resolve, reject) => {
            // console.log(data);
-            const fileName=filename;
+            const fileName=filename || 'test.java';
             await saveFile(fileName,data)
                 const inputfilename="input.txt";
                 fs.writeFile(inputfilename,input,function(error){
@@ -144,7 +144,7 @@ const javaExecutions=(data,input,filename)=>{
                     }
                 })
                 const inputPath=path.join(__dirname,"../input.txt")
-                const filePath=path.join(__dirname,`../${filename}`);
+                const filePath=path.join(__dirname,`../${fileName}`);
                 //console.log("file path >> "+filePath);
                 exec(`javac ${fileName}`,(error,stdout,stderr)=>{
                     if(error){
