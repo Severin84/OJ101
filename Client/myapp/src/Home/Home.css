@@ -1,0 +1,22 @@
+.QuestionTitle{
+    display:flex;
+    position:relative;
+    justify-content:center;
+}
+.QuestionBlock{
+    margin-left:29rem;
+    margin-top:3rem;
+    width:40%;
+    height:100vh;
+    border-radius:1rem;
+    border-style:solid;
+}
+.QuestionsQuestionDiv{
+    display:flex;
+    position:relative;
+    justify-content:center;
+}
+.QuestionsQuestion{
+    cursor:pointer;
+    
+}

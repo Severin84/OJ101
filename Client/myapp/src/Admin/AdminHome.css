@@ -1,0 +1,52 @@
+.Adminpage{
+    display:flex;
+}
+.AdminAside{
+    width:15rem;
+    height:100vh;
+    background-color:#c1c1c1
+}
+.AdminAsideDiv{
+    margin-top:15rem;
+}
+.AdminAsideQuestionUpload{
+    margin-bottom:0.5rem;
+    font-size:1.5rem;
+    height:2rem;
+    width:13rem;
+    border-radius:0.5rem;
+    background-color:#999696;
+    cursor:pointer;
+}
+.AdminAsideAllQuestions{
+    margin-bottom:0.5rem;
+    font-size:1.5rem;
+    height:2rem;
+    width:13rem;
+    border-radius:0.5rem;
+    background-color:#999696;
+    cursor:pointer;
+}
+.AminAsideAllUsers{
+    margin-bottom:0.5rem;
+    font-size:1.5rem;
+    height:2rem;
+    width:13rem;
+    border-radius:0.5rem;
+    background-color:#999696;
+    cursor:pointer;
+}
+.AdminDashboard{
+    height:10rem;
+    width:100vw;
+    background-color:#0f0b30;
+    color:white;
+}
+.AdminDashboardTag{
+    font-size:5rem;
+    margin-top:2rem;
+}
+.AdminDashboardComponents{
+    margin-left:2rem;
+    margin-top:2rem;
+}
