@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import QuestionsUpload from './Components/QuestionsUpload'
 import AllQuestions from './Components/AllQuestions'
 import AllUsers from './Components/AllUsers'
-import '../Admin/AdminHome.css'
+import '../Admin/AdminHome.css';
+
 const AdminHome = () => {
     const [component,setComponent]=useState(<QuestionsUpload/>);
   return (
