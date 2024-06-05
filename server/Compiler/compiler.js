@@ -5,11 +5,20 @@ const { stdout, stderr } = require('process');
 const util = require("util")
 const pe=require('pe-parser')
 const writeFileAsync = util.promisify(fs.writeFile);
+const express=require('express');
+const os=require('os');
+const { error } = require('console');
+const { rejects } = require('assert');
 
+const outputPath=path.join(__dirname,"outputs");
+
+if(!fs.existsSync(outputPath)){
+    fs.mkdirSync(outputPath,{recursive:true})
+}
 
 const saveFile=async (name,data)=>{
     try{
-    await writeFileAsync(name,data); 
+     await writeFileAsync(name,data); 
     console.log("file has been saved!"); 
     }catch(error){
         console.log("somthing went wrong")
@@ -18,174 +27,246 @@ const saveFile=async (name,data)=>{
 }
 
 
-
 const cplusExecution=async (data,input,filename)=>{
-     try{
-        return new Promise(async (resolve, reject) => {
+    try{
+      return new Promise(async(resolve,reject)=>{
         const fileName=filename || 'test.cpp';
-        await saveFile(fileName,data)
+
+        const inputfilename="input.txt";
+
+        const sourcePath=path.join(__dirname,fileName);
+        const executablePath=path.join(__dirname,"CPP.exe")
+        const inputFilePath=path.join(__dirname,inputfilename);
+
+        await saveFile(sourcePath,data)
+           
+        fs.writeFileSync(inputFilePath,input,function(error){
+            if(error){
+                console.log(error);
+                return;
+            }
+        })
+
+        const compile = spawn('g++', [sourcePath, '-o', executablePath]);
+
+        compile.on('close',(code)=>{
+            if(code===0){
+                console.log("compilation successful");
+
+
+                const run=spawn(executablePath);
+
+                const inputStream=fs.createReadStream(inputFilePath);
+
+                inputStream.pipe(run.stdin);
+
+                run.stdout.on('data',(data)=>{
+                    console.log(`Output:${data}`);
+                  
+                    resolve(data)
+                })
+                
+
+                run.stderr.on('data',(data)=>{
+                    console.error(`Error: ${data}`)
+                   
+                    reject(data)
+                })
+
+                run.on('close',(code)=>{
+                    console.log(`Java program exited with code ${code}`)
+                })
+            }else{
+                console.log(`Compilation failed with exit code; ${code}`)
+            }
+        })
+      })
+    }catch(error){
+        console.log("C++: "+ error)
+    }
+}
+
+
+
+const cExecutions =async(data,input,filename)=>{
+     try{
+        return new Promise(async(resolve,reject)=>{
+            const fileName=filename || 'test.c';
+
             const inputfilename="input.txt";
-            fs.writeFile(inputfilename,input,function(error){
+
+            const sourcePath=path.join(__dirname,fileName);
+            const executablePath=path.join(__dirname,"C.exe")
+            const inputFilePath=path.join(__dirname,inputfilename);
+
+            await saveFile(sourcePath,data)
+           
+            fs.writeFileSync(inputFilePath,input,function(error){
                 if(error){
                     console.log(error);
                     return;
                 }
             })
-            const inputPath=path.join(__dirname,"../input.txt")
-            const filePath=path.join(__dirname,`..${fileName}`);
-            //console.log("file path >> "+filePath);
-            exec(`g++ ${fileName}`,(error,stdout,stderr)=>{
-                if(error){
-                    console.log(`exec error:${error}`);
-                    return;
+
+            const compile = spawn('gcc', [sourcePath, '-o', executablePath]);
+
+            compile.on('close',(code)=>{
+                if(code===0){
+                    console.log("compilation successful");
+
+
+                    const run=spawn(executablePath);
+
+                    const inputStream=fs.createReadStream(inputFilePath);
+
+                    inputStream.pipe(run.stdin);
+
+                    run.stdout.on('data',(data)=>{
+                        console.log(`Output:${data}`);
+                      
+                        resolve(data)
+                    })
+                    
+
+                    run.stderr.on('data',(data)=>{
+                        console.error(`Error: ${data}`)
+                       
+                        reject(data)
+                    })
+
+                    run.on('close',(code)=>{
+                        console.log(`Java program exited with code ${code}`)
+                    })
+                }else{
+                    console.log(`Compilation failed with exit code; ${code}`)
                 }
-
-                if(stderr){
-                    console.log(`stderr: ${stderr}`)
-                    return ;
-                }
-                console.log("Compiled");
-
-                const child=spawn("./a");
-                const exepath=path.join(__dirname,"../a.exe");
-                //console.log(exepath)
-                child.stdin.write(input);
-                
-                child.stdin.end();
-
-                child.stdout.on("data",(data)=>{
-                  resolve(data); 
-                     console.log(`child stdout:\n ${data}`);
-                })
-                
-                fs.unlinkSync(inputPath);
-                fs.unlinkSync(filePath)
-                // fs.unlink(exepath,(error)=>{
-                //     if(error){
-                //         console.log(`Deleting exefile error:${error}`)
-                //     }
-                //     console.log("exe file deleted ")
-                // })
             })
-        } )
+        })
      }catch(error){
-        console.log("somthing went wrong while execution")
-        return;
+        console.log("cE"+error)
      }
 }
 
 
-const cExecutions =(data,input,filename)=>{
-    try{
-        return new Promise(async (resolve, reject) => {
-            const fileName=filename || 'test.c';
-            await saveFile(fileName,data)
-                const inputfilename="input.txt";
-                fs.writeFile(inputfilename,input,function(error){
-                    if(error){
-                        console.log(error);
-                        return;
-                    }
-                })
-                const inputPath=path.join(__dirname,"../input.txt")
-                const filePath=path.join(__dirname,`..${fileName}`);
-                //console.log("file path >> "+filePath);
-                exec(`gcc ${fileName}`,(error,stdout,stderr)=>{
-                    if(error){
-                        console.log(`exec error:${error}`);
-                        return;
-                    }
+const javaExecutions=async(data,input,filename)=>{
+
+   try{
+         return new Promise(async(resolve,reject)=>{
+          
+            const fileName=filename || 'test.java';
+
+            const inputfilename="input.txt";
+
+            const sourcePath=path.join(__dirname,fileName);
+            const outputPath=__dirname;
+            const inputFilePath=path.join(__dirname,inputfilename);
+
+            await saveFile(sourcePath,data)
+           
+            fs.writeFileSync(inputFilePath,input,function(error){
+                if(error){
+                    console.log(error);
+                    return;
+                }
+            })
     
-                    if(stderr){
-                        console.log(`stderr: ${stderr}`)
-                        return ;
-                    }
-                    console.log("Compiled");
-    
-                    const child=spawn("./a");
-                    const exepath=path.join(__dirname,"../a.exe");
-                    //console.log(exepath)
-                    child.stdin.write(input);
-                    child.stdin.end();
-    
-                    child.stdout.on("data",(data)=>{
-                      resolve(data); 
-                         console.log(`child stdout:\n ${data}`);
+            const compile=spawn('javac',[sourcePath]);
+
+            compile.on('close',(code)=>{
+                if(code===0){
+                    console.log("compilation successful");
+
+                    const className=path.basename(sourcePath,'.java');
+
+                    const run=spawn('java',['-cp',outputPath,className]);
+
+                    const inputStream=fs.createReadStream(inputFilePath);
+
+                    inputStream.pipe(run.stdin);
+
+                    run.stdout.on('data',(data)=>{
+                        console.log(`Output:${data}`);
+                      
+                        resolve(data)
                     })
                     
-                    fs.unlinkSync(inputPath);
-                    fs.unlinkSync(filePath)
-                    // fs.unlink(exepath,(error)=>{
-                    //     if(error){
-                    //         console.log(`Deleting exefile error:${error}`)
-                    //     }
-                    //     console.log("exe file deleted ")
-                    // })
-                })
-            } )
-    }catch(error){
-        console.log("somthing went wrong while execution")
-        return;
-    }
+                    run.stdout.on('data',(data)=>{
+                        console.log(`output:${data}`)
+                     
+                       resolve(data)
+                    })
+
+                    run.stderr.on('data',(data)=>{
+                        console.error(`Error: ${data}`)
+                       
+                        reject(data)
+                    })
+
+                    run.on('close',(code)=>{
+                        console.log(`Java program exited with code ${code}`)
+                    })
+                }else{
+                    console.log(`Compilation failed with exit code; ${code}`)
+                }
+            })
+
+            compile.stderr.on('data',(data)=>{
+                console.error(`compilation error : ${data}`)
+                reject(data)
+            })
+         }
+        )
+   }catch(error){
+     console.log("javaE: "+error)
+   }
 }
 
-
-const javaExecutions=(data,input,filename)=>{
+const pythonExecution=async(data,input,filename)=>{
     try{
-        return new Promise(async (resolve, reject) => {
-           // console.log(data);
-            const fileName=filename || 'test.java';
-            await saveFile(fileName,data)
-                const inputfilename="input.txt";
-                fs.writeFile(inputfilename,input,function(error){
-                    if(error){
-                        console.log(error);
-                        return;
-                    }
-                })
-                const inputPath=path.join(__dirname,"../input.txt")
-                const filePath=path.join(__dirname,`../${fileName}`);
-                //console.log("file path >> "+filePath);
-                exec(`javac ${fileName}`,(error,stdout,stderr)=>{
-                    if(error){
-                        console.log(`exec error:${error}`);
-                        return;
-                    }
-    
-                    if(stderr){
-                        console.log(`stderr: ${stderr}`)
-                        return ;
-                    }
-                    //console.log("Compiled");
-    
-                    const child=spawn("./a");
-                    const exepath=path.join(__dirname,"../a.exe");
-                    //console.log(exepath)
-                    child.stdin.write(input);
-                    //console.log("yy")
-                    //child.stdin.write();
-                    child.stdin.end();
-    
-                    child.stdout.on("data",(data)=>{
-                      resolve(data); 
-                         console.log(`child stdout:\n ${data}`);
+        return new Promise(async(resolve,reject)=>{
+            const fileName=filename || 'test.py';
+
+            const inputfilename="input.txt";
+
+            const sourcePath=path.join(__dirname,fileName);
+           
+            const inputFilePath=path.join(__dirname,inputfilename);
+
+            await saveFile(sourcePath,data)
+           
+            fs.writeFileSync(inputFilePath,input,function(error){
+                if(error){
+                    console.log(error);
+                    return;
+                }
+            })
+                    const run=spawn('python',[sourcePath]);
+
+                    const inputStream=fs.createReadStream(inputFilePath);
+
+                    inputStream.pipe(run.stdin);
+
+                    run.stdout.on('data',(data)=>{
+                        console.log(`Output:${data}`);
+                      
+                        resolve(data)
                     })
                     
-                    fs.unlinkSync(inputPath);
-                    fs.unlinkSync(filePath)
-                    // fs.unlink(exepath,(error)=>{
-                    //     if(error){
-                    //         console.log(`Deleting exefile error:${error}`)
-                    //     }
-                    //     console.log("exe file deleted ")
-                    // })
-                })
-            } )
+
+                    run.stderr.on('data',(data)=>{
+                        console.error(`Error: ${data}`)
+                       
+                        reject(data)
+                    })
+
+                    run.on('close',(code)=>{
+                        console.log(`Java program exited with code ${code}`)
+                    })
+        })
     }catch(error){
-        console.log("somthing went wrong while execution")
-        return;
+        console.log("PY E"+error)
     }
 }
 module.exports={
-    cplusExecution,cExecutions,javaExecutions
+    cplusExecution,cExecutions,javaExecutions,pythonExecution
 }

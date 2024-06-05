@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import '../Home/Home.css'
 
 const Home = ({setQuestion}) => {
-  const [questions,setQuestions]=useState();
+  const [questions,setQuestions]=useState([]);
   const navigate=useNavigate();
   const getQuestions=async()=>{
     const response=await axios.get("http://localhost:5000/api/question/getallQuestions")
     //console.log(response);
     setQuestions(response?.data?.data)
   }
- // console.log(questions)
+ console.log(questions)
   useEffect(()=>{
       getQuestions();
   },[])
@@ -24,7 +24,7 @@ const Home = ({setQuestion}) => {
         {
           questions && questions.map((value,idx)=>(
             <div className='QuestionsQuestionDiv'  key={idx}>
-              <h4 className='QuestionsQuestion'  onClick={()=>{setQuestion(value?.title);navigate("/editor")}}>{value?.title}</h4>
+              <h4 className='QuestionsQuestion'  onClick={()=>{setQuestion(value);navigate("/editor")}}>{value?.title}</h4>
             </div>
           ))
         }
