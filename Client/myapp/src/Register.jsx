@@ -17,7 +17,9 @@ const Register = () => {
         password:password,
       })
      if(response.status===200){
-       navigate('/home')
+       navigate('/login')
+     }else{
+       navigate("/register")
      }
     }catch(error){
       console.log(error)

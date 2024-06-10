@@ -1,7 +1,8 @@
 .RegisterPage{
-    background-color:black;
+    /* background-color:black; */
     width:100vw;
     height:100vh;
+    background: linear-gradient(90deg ,#280000 33.33%, #b10f2e 33.33%,#b10f2e 66.66%, #fdffff 66.66%);
 }
 .RegisterBlock{
     position:relative;
@@ -9,7 +10,7 @@
     align-content:center;
     display:flex;
     top:10rem;
-    background-color:#a2f30c;
+    background-color:#faa916;
     width:25%;
     left:35rem;
     border-radius:1rem;
@@ -26,31 +27,38 @@
 .RegisterInputText{
     width:15rem;
     height:2rem;
-    border-radius:1rem;
+    border-radius:0.5rem;
+    font-size: 1.2rem;
 }
 .RegisterInputEmail{
     width:15rem;
     height:2rem;
-    border-radius:1rem;
+    border-radius:0.5rem;
+    font-size: 1.2rem;
 }
+
 .RegisterInputPassword{
     width:15rem;
     height:2rem;
-    border-radius:1rem;
+    border-radius:0.5rem;
+    font-size: 1.2rem;
 }
 .RegisterButtonDiv{
-    height:2rem;
-    width:3rem;
+    height:3rem;
+    width:6rem;
     display:flex;
     position:relative;
-    margin-left:6rem
+    margin-left:4.5rem
 }
 .RegisterButton{
-    height:2rem;
-    width:4rem;
+    height:3rem;
+    width:6rem;
     border-radius:1rem;
     background-color:#000000;
     color:white;
+}
+.RegisterButton:active{
+    transform:scale(0.95);
 }
 .RegisterTextDiv{
     display:flex;

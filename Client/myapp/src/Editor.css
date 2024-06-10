@@ -1,11 +1,32 @@
 .EditorQuestionTag{
     margin-top:3rem;
-    margin-left:30rem
+    /* margin-left:3rem; */
+    display:flex;
+    justify-content:center
 }
 .Editor{
     display:flex;
-    margin-left:25rem;
+    margin-left:5rem;
     margin-top:5rem;
+}
+.descriptionDiv{
+    width:20.2rem;
+    border-style: solid;
+    border-radius: 1rem;
+}
+.langdrop{
+    padding-top: 2rem;
+    display:flex;
+    justify-content:center
+}
+.editorspace{
+    margin-left: 10rem;
+}
+.des{
+    padding: 1rem;
+}
+.description{
+    padding:1rem;
 }
 .LanguageSelection{
     width:5rem;
@@ -15,6 +36,10 @@
     position:relative;
     left:2rem;
     overflow:hidden;
+}
+.QuestionType{
+    display: flex;
+    justify-content: center;
 }
 .EditorInputOutput{
     display:flex;

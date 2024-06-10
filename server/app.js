@@ -8,15 +8,17 @@ const Compiler=require("./Routes/Compiler.js");
 const submitCode=require("./Routes/SubmitCode.js")
 const bodyparser=require('body-parser')
 const cors=require('cors');
+const cookieParser = require('cookie-parser');
 const app=express();
 
 
 app.use(express.json());
 dotenv.config()
-app.use(cors())
+app.use(cors({origin:'http://localhost:3000',credentials:true}))
 app.use(express.static(__dirname))
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json())
+app.use(cookieParser())
 //qIU2swIDluB5CV42
 const PORT= process.env.PORT;
 async function connect(){

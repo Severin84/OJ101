@@ -35,7 +35,7 @@ const cplusExecution=async (data,input,filename)=>{
         const inputfilename="input.txt";
 
         const sourcePath=path.join(__dirname,fileName);
-        const executablePath=path.join(__dirname,"CPP.exe")
+        const executablePath=path.join(__dirname,"CPP.out")
         const inputFilePath=path.join(__dirname,inputfilename);
 
         await saveFile(sourcePath,data)
@@ -80,6 +80,8 @@ const cplusExecution=async (data,input,filename)=>{
                 console.log(`Compilation failed with exit code; ${code}`)
             }
         })
+        // fs.unlinkSync(inputFilePath)
+        // fs.unlinkSync(sourcePath)
       })
     }catch(error){
         console.log("C++: "+ error)
@@ -96,7 +98,7 @@ const cExecutions =async(data,input,filename)=>{
             const inputfilename="input.txt";
 
             const sourcePath=path.join(__dirname,fileName);
-            const executablePath=path.join(__dirname,"C.exe")
+            const executablePath=path.join(__dirname,"C.out")
             const inputFilePath=path.join(__dirname,inputfilename);
 
             await saveFile(sourcePath,data)
@@ -141,12 +143,13 @@ const cExecutions =async(data,input,filename)=>{
                     console.log(`Compilation failed with exit code; ${code}`)
                 }
             })
+            // fs.unlinkSync(inputFilePath)
+            // fs.unlinkSync(sourcePath)
         })
      }catch(error){
         console.log("cE"+error)
      }
 }
-
 
 const javaExecutions=async(data,input,filename)=>{
 
@@ -208,17 +211,21 @@ const javaExecutions=async(data,input,filename)=>{
                 }else{
                     console.log(`Compilation failed with exit code; ${code}`)
                 }
+                // fs.unlinkSync(inputFilePath)
+                // fs.unlinkSync(sourcePath)
             })
-
+    
             compile.stderr.on('data',(data)=>{
                 console.error(`compilation error : ${data}`)
                 reject(data)
             })
+            
          }
         )
    }catch(error){
      console.log("javaE: "+error)
    }
+
 }
 
 const pythonExecution=async(data,input,filename)=>{
@@ -262,6 +269,9 @@ const pythonExecution=async(data,input,filename)=>{
                     run.on('close',(code)=>{
                         console.log(`Java program exited with code ${code}`)
                     })
+
+                    // fs.unlinkSync(inputFilePath)
+                    // fs.unlinkSync(sourcePath)
         })
     }catch(error){
         console.log("PY E"+error)

@@ -2,9 +2,9 @@
     display:flex;
 }
 .AdminAside{
-    width:15rem;
+    width:18rem;
     height:100vh;
-    background-color:#c1c1c1
+    background-color:#6d676e
 }
 .AdminAsideDiv{
     margin-top:15rem;
@@ -15,7 +15,7 @@
     height:2rem;
     width:13rem;
     border-radius:0.5rem;
-    background-color:#999696;
+    background-color:#969197;
     cursor:pointer;
 }
 .AdminAsideAllQuestions{
@@ -24,7 +24,7 @@
     height:2rem;
     width:13rem;
     border-radius:0.5rem;
-    background-color:#999696;
+    background-color:#969197;
     cursor:pointer;
 }
 .AminAsideAllUsers{
@@ -33,13 +33,13 @@
     height:2rem;
     width:13rem;
     border-radius:0.5rem;
-    background-color:#999696;
+    background-color:#969197;
     cursor:pointer;
 }
 .AdminDashboard{
     height:10rem;
     width:100vw;
-    background-color:#0f0b30;
+    background-color:#1b1b1e;
     color:white;
 }
 .AdminDashboardTag{

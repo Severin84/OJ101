@@ -13,6 +13,10 @@ const QuestionSchema=new mongoose.Schema({
         type:Number,
         required:true,
     },
+    difficulty:{
+        type:Object,
+        default:{difficulty:"Easy",color:"#2ad10d"}
+    }
 },{timestamps:true})
 
 const QuestionsModel=mongoose.model('Questions',QuestionSchema);

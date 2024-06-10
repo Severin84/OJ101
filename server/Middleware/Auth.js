@@ -1,5 +1,31 @@
 const jwt =require('jsonwebtoken');
-const { UserModel } = require('../Models/UserModel');
+const {User} = require('../Models/UserModel');
+
+const verifyJWT=async(req,res,next)=>{
+  try{
+      const token=req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+      // console.log("V");
+      // console.log(token);
+      // console.log("^")
+
+      if(token===undefined){
+        return res.status(401).json({message:"Unauthorized request"})
+      }
+
+      const decodedToken= jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+      //console.log(decodedToken)
+      const user=await User.findById(decodedToken?._id).select("-password -refreshToken");
+
+      if(!user){
+         return res.status(401).json({message:"Invalid Access Token"})
+      }
+
+      req.user=user;
+      next();
+  }catch(error){
+    return res.status(401).json({message:"Invalid access token"})
+  }
+}
 
 const authenticateUser=(req,res,next)=>{
     try{
@@ -32,5 +58,6 @@ const authorizeUser=(requiredRole)=>async(req,res,next)=>{
 
 module.exports={
     authenticateUser,
-    authorizeUser
+    authorizeUser,
+    verifyJWT
 }

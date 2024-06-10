@@ -13,7 +13,7 @@ const AdminHome = () => {
                 <div className='AdminAsideDiv' >
                 <div className='AdminAsideQuestionUpload'  onClick={()=>setComponent(<QuestionsUpload/>)}>QuestionsUpload</div>
                 <div className='AdminAsideAllQuestions' onClick={()=>setComponent(<AllQuestions/>)}>AllQuestions</div>
-                <div className='AminAsideAllUsers'  onClick={()=>setComponent(<AllUsers/>)}>AllUsers</div>
+                {/* <div className='AminAsideAllUsers'  onClick={()=>setComponent(<AllUsers/>)}>AllUsers</div> */}
                 </div>
             </aside>
             <div>

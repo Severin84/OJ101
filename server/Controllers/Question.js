@@ -2,7 +2,7 @@ const  QuestionsModel=require("../Models/QuestionsModel.js")
 
 const createQuestions=async(req,res,next)=>{
   try{
-    const {title,discription,pid}=req.body;
+    const {title,discription,pid,difficulty}=req.body;
     if(!title||!discription||!pid){
         return res.status(400).json({message:"please fill all the details"});
     }
@@ -10,7 +10,7 @@ const createQuestions=async(req,res,next)=>{
     if(quest){
         return res.status(400).json({message:"Question already exist"});
     }
-    const response=await QuestionsModel.QuestionsModel({title:title,discription:discription,pid:pid})
+    const response=await QuestionsModel.QuestionsModel({title:title,discription:discription,pid:pid,difficulty:difficulty})
     await response.save();
     res.status(200).json({message:"Qestion has been created"})
   }catch(error){

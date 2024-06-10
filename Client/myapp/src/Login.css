@@ -1,17 +1,18 @@
 .LoginPage{
-    background-color:black;
+    /* background-color:#fbfffe; */
     width:100vw;
     height:100vh;
+    background: linear-gradient(to left,#280000 50%,#fdffff 50%);  
 }
 .LoginBlock{
     position:relative;
     justify-content:center;
-    align-content:center;
+    /* align-content:center; */
     display:flex;
     top:10rem;
-    background-color:#a2f30c;
+    background-color:#b10f2e;
     width:20rem;
-    left:35rem;
+    left:38rem;
     border-radius:1rem;
    
 }
@@ -28,26 +29,31 @@
 .EmailInput{
     width:15rem;
     height:2rem;
-    border-radius:1rem;
+    border-radius:0.5rem;
+    font-size: 1.2rem;
 }
 .PasswordInput{
     width:15rem;
     height:2rem;
-    border-radius:1rem;
+    border-radius:0.5rem;
+    font-size: 1.2rem;
 }
 .LoginButtonDiv{
-    height:2rem;
-    width:3rem;
+    height:3rem;
+    width:5rem;
     display:flex;
     position:relative;
-    margin-left:6rem
+    margin-left:5rem
 }
 .LoginButton{
-    height:2rem;
-    width:4rem;
+    height:3rem;
+    width:5rem;
     border-radius:1rem;
     background-color:#000000;
     color:white
+}
+.LoginButton:active{
+    transform:scale(0.95);
 }
 .LoginTextDiv{
     display:flex;
